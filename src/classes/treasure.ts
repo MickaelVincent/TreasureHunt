@@ -1,3 +1,5 @@
+import Adventurer from "./adventurer";
+import Person from "./adventurer";
 import { MapGridItem } from "./mapGridItem";
 
 class Treasure implements MapGridItem {
@@ -20,6 +22,13 @@ class Treasure implements MapGridItem {
 
   doesBlockMovement() {
     return false;
+  }
+
+  onEnter(adventurer: Adventurer) {
+    if (this.quantity > 0) {
+      this.decreaseQuantity();
+      adventurer.addTreasure();
+    }
   }
 }
 

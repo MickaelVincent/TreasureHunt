@@ -17,22 +17,42 @@ class Map {
       .fill(undefined)
       .map(() => new Array(mapDimensions[0]).fill(undefined));
   }
-
+  checkIfGameFinished() {
+    return this.adventurers.find(
+      (adventurer) => adventurer.movementInstruction.length !== 0,
+    );
+  }
   addAdventurer(adventurer: Adventurer) {
     this.adventurers.push(adventurer);
     this.mapStringGrid[adventurer.coordinates[1]][adventurer.coordinates[0]] =
       adventurer.identifier;
   }
   addMountain(coordinates: [number, number]) {
-    this.mapGrid[coordinates[1]][coordinates[0]] = new Mountain(coordinates);
+    this.mapGrid[coordinates[0]][coordinates[1]] = new Mountain(coordinates);
     this.mapStringGrid[coordinates[1]][coordinates[0]] = "M";
   }
   addTreasure(coordinates: [number, number], quantity: number) {
-    this.mapGrid[coordinates[1]][coordinates[0]] = new Treasure(
+    this.mapGrid[coordinates[0]][coordinates[1]] = new Treasure(
       coordinates,
       quantity,
     );
     this.mapStringGrid[coordinates[1]][coordinates[0]] = `T(${quantity})"`;
+  }
+
+  getDestination(x: number, y: number): MapGridItem {
+    if (
+      x >= this.mapGrid.length ||
+      y >= this.mapGrid[0].length ||
+      x < 0 ||
+      y < 0
+    )
+      throw new Error("Invalid coordinates");
+    let currentAdventurer = this.adventurers.find(
+      (adventurer) =>
+        adventurer.coordinates[0] === x && adventurer.coordinates[1] === y,
+    );
+    if (currentAdventurer) return currentAdventurer;
+    return this.mapGrid[x][y];
   }
 
   printMap() {
