@@ -2,6 +2,7 @@ import Game from "../classes/game";
 import Map from "../classes/map";
 import Adventurer from "../classes/adventurer";
 import { mapDirection, mapOrientation } from "./mappers";
+import { EntityType } from "../types/type";
 
 export function parseFile(lines: string[]): Game {
   let newGame: Game = new Game();
@@ -21,21 +22,21 @@ export function parseFile(lines: string[]): Game {
 
     for (let config of configurationLines) {
       switch (config[0]) {
-        case "C": {
+        case EntityType.Map: {
           throw new Error("Map already defined");
         }
-        case "M": {
+        case EntityType.Mountain: {
           if (newMap !== undefined) {
             newMap.addMountain(extractCoordinates(config));
           } else throw new ReferenceError("No map defined");
           break;
         }
-        case "T":
+        case EntityType.Treasure:
           if (newMap !== undefined) {
             newMap.addTreasure(...extractTreasure(config));
           } else throw new ReferenceError("No map defined");
           break;
-        case "A": {
+        case EntityType.Adventurer: {
           if (newMap !== undefined) {
             newGame.addAdventurer(extractAdventurer(config));
           } else throw new ReferenceError("No map defined");
