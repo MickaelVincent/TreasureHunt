@@ -51,6 +51,7 @@ export function parseFile(lines: string[]): Game {
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
+      throw error;
     }
   }
   return newGame;
