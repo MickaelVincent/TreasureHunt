@@ -7,6 +7,7 @@ import {
   parseFile,
 } from "../../utils/parser";
 import fs from "fs";
+import { printMap } from "../../utils/printer";
 
 function getFileContent(fileName: string): string[] {
   let srcPath = path.join(__dirname, fileName);
@@ -16,7 +17,7 @@ function getFileContent(fileName: string): string[] {
 
 test("Test the main function", () => {
   let newGame: Game = parseFile(getFileContent("entry.txt"));
-  newGame.gameMap?.printMap();
+  console.table(printMap(newGame.getGameMap(), newGame.getAdventurers()));
 
   expect(newGame).toBeDefined();
   expect(newGame.gameMap).toBeDefined();
