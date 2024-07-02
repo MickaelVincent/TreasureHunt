@@ -33,6 +33,10 @@ class Map {
       );
     return this.mapGrid[x][y];
   }
+
+  getTechnicalIdentifier(): string {
+    return `C - ${this.mapGrid.length} - ${this.mapGrid[0].length}\n`;
+  }
 }
 
 export default Map;

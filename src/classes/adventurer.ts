@@ -6,6 +6,7 @@ import Treasure from "./treasure";
 
 class Adventurer implements MapGridItem {
   identifier: string;
+  name: string;
   coordinates: [number, number];
   currentOrientation: Orientation;
   movementInstruction: Direction[];
@@ -18,6 +19,7 @@ class Adventurer implements MapGridItem {
     movementInstruction: Direction[],
   ) {
     this.identifier = `A(${name})`;
+    this.name = name;
     this.coordinates = initialCoordinates;
     this.currentOrientation = currentOrientation;
     this.movementInstruction = movementInstruction;
@@ -142,6 +144,10 @@ class Adventurer implements MapGridItem {
     if (hasMoved) {
       this.movementInstruction.shift();
     }
+  }
+
+  getTechnicalIdentifier(): string {
+    return `A - ${this.name} - ${this.coordinates[0]} - ${this.coordinates[1]} - ${this.currentOrientation[0]} - ${this.treasureCount}\n`;
   }
 }
 

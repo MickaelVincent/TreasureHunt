@@ -32,6 +32,12 @@ class Treasure implements MapGridItem {
       adventurer.addTreasure();
     }
   }
+
+  getTechnicalIdentifier(): string {
+    return this.quantity > 0
+      ? `T - ${this.coordinates[0]} - ${this.coordinates[1]} - ${this.quantity}\n`
+      : "";
+  }
 }
 
 export default Treasure;
