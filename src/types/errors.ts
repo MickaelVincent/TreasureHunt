@@ -4,3 +4,9 @@ export class OutOfBoundsError extends Error {
     this.name = "OutOfBoundsError";
   }
 }
+export class InvalidCoordinatesError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "InvalidCoordinatesError";
+  }
+}

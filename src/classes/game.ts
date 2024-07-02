@@ -1,3 +1,4 @@
+import { InvalidCoordinatesError } from "../types/errors";
 import Adventurer from "./adventurer";
 import Map from "./map";
 
@@ -14,6 +15,21 @@ class Game {
   }
 
   addAdventurer(adventurer: Adventurer) {
+    let destination = this.gameMap?.getGridItemByCoordinates(
+      adventurer.coordinates[0],
+      adventurer.coordinates[1],
+    );
+    if (
+      this.adventurers.find(
+        (adv) =>
+          adv.coordinates[0] === adventurer.coordinates[0] &&
+          adv.coordinates[1] === adventurer.coordinates[1],
+      ) ||
+      destination
+    )
+      throw new InvalidCoordinatesError(
+        "Adventurer cannot start on another entity",
+      );
     this.adventurers.push(adventurer);
   }
 
