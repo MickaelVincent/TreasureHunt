@@ -7,6 +7,9 @@ class Mountain implements MapGridItem {
   constructor(coordinates: [number, number]) {
     this.coordinates = coordinates;
   }
+  getIdentifier(): string {
+    return this.identifier;
+  }
 
   doesBlockMovement() {
     return true;
