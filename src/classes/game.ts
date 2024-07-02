@@ -6,10 +6,6 @@ class Game {
   gameMap: Map | undefined;
   adventurers: Adventurer[] = [];
 
-  constructor() {
-    console.log("Game is getting instanciated...");
-  }
-
   setMap(map: Map) {
     this.gameMap = map;
   }

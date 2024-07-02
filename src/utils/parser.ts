@@ -21,25 +21,24 @@ export function parseFile(lines: string[]): Game {
     }
 
     for (let config of configurationLines) {
+      let coordinates;
       switch (config[0]) {
         case EntityType.Map: {
           throw new Error("Map already defined");
         }
         case EntityType.Mountain: {
-          if (newMap !== undefined) {
-            newMap.addMountain(extractCoordinates(config));
-          } else throw new ReferenceError("No map defined");
+          coordinates = extractCoordinates(config);
+          newMap.getGridItemByCoordinates(coordinates[0], coordinates[1]);
+          newMap.addMountain(coordinates);
           break;
         }
         case EntityType.Treasure:
-          if (newMap !== undefined) {
-            newMap.addTreasure(...extractTreasure(config));
-          } else throw new ReferenceError("No map defined");
+          coordinates = extractTreasure(config);
+          newMap.getGridItemByCoordinates(coordinates[0][0], coordinates[0][1]);
+          newMap.addTreasure(...coordinates);
           break;
         case EntityType.Adventurer: {
-          if (newMap !== undefined) {
-            newGame.addAdventurer(extractAdventurer(config));
-          } else throw new ReferenceError("No map defined");
+          newGame.addAdventurer(extractAdventurer(config));
           break;
         }
         case "#":
@@ -52,7 +51,6 @@ export function parseFile(lines: string[]): Game {
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
-      throw error;
     }
   }
   return newGame;
