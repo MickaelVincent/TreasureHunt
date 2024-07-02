@@ -1,3 +1,4 @@
+import fs from "fs";
 import Adventurer from "../classes/adventurer";
 import Map from "../classes/map";
 
@@ -25,4 +26,23 @@ export function printMap(map: Map, adventurers: Adventurer[]): string[][] {
   });
 
   return stringMap;
+}
+
+export function exportFile(path: string, map: Map, adventurers: Adventurer[]) {
+  try {
+    let content = `C - ${map.getGrid().length} - ${map.getGrid()[0].length}\n`;
+    map.getGrid().forEach((row) => {
+      row.forEach((column) => {
+        if (column !== undefined) {
+          content += `${column.getTechnicalIdentifier()}`;
+        }
+      });
+    });
+    adventurers.forEach((adventurer) => {
+      content += `${adventurer.getTechnicalIdentifier()}`;
+    });
+    fs.writeFileSync(path, content);
+  } catch (e) {
+    console.log(e);
+  }
 }
