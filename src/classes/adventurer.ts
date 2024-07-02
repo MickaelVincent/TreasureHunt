@@ -1,3 +1,4 @@
+import { OutOfBoundsError } from "../types/errors";
 import { Direction, Orientation } from "../types/type";
 import Map from "./map";
 import { MapGridItem } from "./mapGridItem";
@@ -63,7 +64,7 @@ class Adventurer implements MapGridItem {
         break;
     }
   }
-  moveForward(currentMap: Map) {
+  moveForward(currentMap: Map, adventurers: Adventurer[]) {
     let newCoordinates: [number, number] = [
       this.coordinates[0],
       this.coordinates[1],
@@ -82,42 +83,58 @@ class Adventurer implements MapGridItem {
         newCoordinates[0] -= 1;
         break;
     }
-    // console.log(
-    //   this.identifier,
-    //   this.coordinates,
-    //   " is moving to ",
-    //   newCoordinates,
-    // );
-    let destination = currentMap.getDestination(
+    let destination = currentMap.getGridItemByCoordinates(
       newCoordinates[0],
       newCoordinates[1],
     );
-    if (destination?.doesBlockMovement()) {
-      console.log(
-        "Movement blocked",
-        destination.identifier,
-        destination.coordinates,
-      );
+
+    if (destination === undefined || destination.doesBlockMovement()) {
+      return false;
     } else {
+      if (
+        adventurers.find(
+          (adventurer) =>
+            adventurer.coordinates[0] === newCoordinates[0] &&
+            adventurer.coordinates[1] === newCoordinates[1],
+        )
+      )
+        return false;
+
       this.coordinates = newCoordinates;
       if (destination instanceof Treasure) {
         destination.onEnter(this);
       }
+      return true;
     }
   }
 
-  executeNextMove(currentMap: Map) {
-    const nextMove = this.movementInstruction.shift();
-    switch (nextMove) {
-      case Direction.Left:
-        this.turnLeft();
-        break;
-      case Direction.Right:
-        this.turnRight();
-        break;
-      case Direction.Up:
-        this.moveForward(currentMap);
-        break;
+  executeNextMove(currentMap: Map, adventurers: Adventurer[]) {
+    let nextMove = this.movementInstruction[0];
+    let hasMoved = false;
+    try {
+      switch (nextMove) {
+        case Direction.Left:
+          this.turnLeft();
+          break;
+        case Direction.Right:
+          this.turnRight();
+          break;
+        case Direction.Up:
+          hasMoved = this.moveForward(currentMap, adventurers);
+          break;
+      }
+    } catch (error) {
+      if (error instanceof OutOfBoundsError)
+        console.log(
+          "Adenturer named: ",
+          this.identifier,
+          " has encountered an error: ",
+          error.message,
+        );
+      this.movementInstruction.shift();
+    }
+    if (hasMoved) {
+      this.movementInstruction.shift();
     }
   }
 }

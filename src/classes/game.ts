@@ -1,38 +1,41 @@
+import Adventurer from "./adventurer";
 import Map from "./map";
 
 class Game {
-  _gameMap: Map | undefined;
+  gameMap: Map | undefined;
+  adventurers: Adventurer[] = [];
 
   constructor() {
     console.log("Game is getting instanciated...");
   }
 
   setMap(map: Map) {
-    this._gameMap = map;
+    this.gameMap = map;
   }
 
-  printGameResults() {
-    this._gameMap?.adventurers.forEach((adventurer) => {
-      console.log(
-        `A(${adventurer.identifier}) has ${adventurer.treasureCount} treasures and finished her exploraiton at coordinates: ${adventurer.coordinates}`,
-      );
-    });
+  addAdventurer(adventurer: Adventurer) {
+    this.adventurers.push(adventurer);
+  }
+
+  isFinished() {
+    return this.adventurers.find(
+      (adventurer) => adventurer.movementInstruction.length !== 0,
+    );
   }
 
   playGame() {
-    if (this._gameMap === undefined) {
+    if (this.gameMap === undefined) {
       throw new Error("No map defined");
     } else {
       console.log("Game is being played...");
-      while (this._gameMap.checkIfGameFinished()) {
-        this._gameMap.adventurers.forEach((adventurer) => {
+      while (!this.isFinished()) {
+        this.adventurers.forEach((adventurer) => {
           if (adventurer.movementInstruction.length > 0) {
-            adventurer.executeNextMove(this._gameMap as Map);
+            adventurer.executeNextMove(this.gameMap as Map, this.adventurers);
           }
         });
       }
     }
-    this.printGameResults();
   }
 }
 

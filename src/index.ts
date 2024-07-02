@@ -10,6 +10,6 @@ let lines = data.split("\n");
 
 let newGame: Game = parseFile(lines);
 
-newGame._gameMap?.printMap();
+newGame.gameMap?.printMap();
 
 newGame.playGame();

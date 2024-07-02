@@ -37,7 +37,7 @@ export function parseFile(lines: string[]): Game {
           break;
         case "A": {
           if (newMap !== undefined) {
-            newMap.addAdventurer(extractAdventurer(config));
+            newGame.addAdventurer(extractAdventurer(config));
           } else throw new ReferenceError("No map defined");
           break;
         }

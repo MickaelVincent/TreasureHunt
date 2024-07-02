@@ -16,10 +16,10 @@ function getFileContent(fileName: string): string[] {
 
 test("Test the main function", () => {
   let newGame: Game = parseFile(getFileContent("entry.txt"));
-  newGame._gameMap?.printMap();
+  newGame.gameMap?.printMap();
 
   expect(newGame).toBeDefined();
-  expect(newGame._gameMap).toBeDefined();
+  expect(newGame.gameMap).toBeDefined();
 });
 
 test("Parse a file with errors inside", () => {
