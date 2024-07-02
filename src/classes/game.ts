@@ -17,10 +17,24 @@ class Game {
     this.adventurers.push(adventurer);
   }
 
-  isFinished() {
-    return this.adventurers.find(
+  getGameMap(): Map {
+    if (this.gameMap === undefined) {
+      throw new Error("No map defined");
+    } else {
+      return this.gameMap;
+    }
+  }
+  getAdventurers(): Adventurer[] {
+    if (this.adventurers.length === 0)
+      throw new Error("No adventurers defined");
+    return this.adventurers;
+  }
+
+  isFinished(): boolean {
+    let unfinishedAdventurer = this.adventurers.find(
       (adventurer) => adventurer.movementInstruction.length !== 0,
     );
+    return unfinishedAdventurer === undefined;
   }
 
   playGame() {

@@ -24,6 +24,10 @@ class Adventurer implements MapGridItem {
     this.treasureCount = 0;
   }
 
+  getIdentifier(): any {
+    return `${this.identifier}(${this.treasureCount})`;
+  }
+
   doesBlockMovement() {
     return true;
   }
@@ -88,7 +92,7 @@ class Adventurer implements MapGridItem {
       newCoordinates[1],
     );
 
-    if (destination === undefined || destination.doesBlockMovement()) {
+    if (destination?.doesBlockMovement()) {
       return false;
     } else {
       if (
@@ -115,9 +119,11 @@ class Adventurer implements MapGridItem {
       switch (nextMove) {
         case Direction.Left:
           this.turnLeft();
+          hasMoved = true;
           break;
         case Direction.Right:
           this.turnRight();
+          hasMoved = true;
           break;
         case Direction.Up:
           hasMoved = this.moveForward(currentMap, adventurers);
